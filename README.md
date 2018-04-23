@@ -1,5 +1,5 @@
 # Image Classifier
-![A screenshot of the user interface](https://github.com/SuparSquid/Image-Classifier/blob/master/Capture.PNG?raw=true)<br />
+![A screenshot of the user interface](https://github.com/SuparSquid/Image-Classifier/blob/master/screenshot.PNG?raw=true)<br />
 This is a simple image classifier built using Tensorflow that is attached to a Flask server and a Vue user interface that can upload images and receive results from the trained model.
 
 
