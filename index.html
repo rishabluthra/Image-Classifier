@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <!-- import CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/buefy/lib/buefy.min.css">
+  <script src="https://unpkg.com/vue-picture-input"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.0"></script>
+
+  <script src="https://unpkg.com/buefy"></script>
+</head>
+
+<body>
+  <div id="app">
+    <section class="hero is-fullheight" style="background-color:#F1ECE9; color: #485058">
+      <div class="hero-head">
+        <div class="container has-text-centered" style="padding-top: 50px">
+          <h1 class="title" style="color: #485058">
+            Image Classifier, a project by Rishab Luthra
+          </h1>
+        </div>
+      </div>
+      <div class="hero-body">
+        <div class="container">
+
+          <div class="level">
+              <div class="level-item has-text-centered">
+            <img v-bind:src="imagePreview" v-show="showPreview" style="width: 300px; height:300px;" />
+          </div>
+          </div>
+          <div class="level">
+              <div class="level-item has-text-centered">
+            
+              <label class="file-label">
+                <input class="file-input" type="file" id="file" ref="file" v-on:change="handleFileUpload()">
+                <span class="file-cta button is-danger" style="background-color: #D7443F">
+                  <span class="file-label">
+                    Upload image
+                  </span>
+                </span>
+              </label>
+              </div>
+          </div>
+            <div class="level">
+                <div class="level-item has-text-centered">
+
+
+              <button class="button is-danger"v-on:click="submitFile()" style="background-color: #D7443F">Submit</button>
+              </div>
+
+            </div>
+            <div class="level">
+                <div class="level-item has-text-centered">
+            <h2 class="title" style="color: #333A42">{{result}}</h1>
+                </div>
+
+            </div>
+          </div>
+        </div>
+        <div class="hero-footer">
+          <div class="container has-text-centered">
+            
+          </div>
+        </div>
+    </section>
+    </div>
+</body>
+
+
+<script>
+  function POST(url, image, name = 'image') {
+    var formData = new FormData();
+    console.log(name)
+    formData.append(name, image);
+
+    console.log(formData.entries())
+    return axios.post(url, formData, config);
+  }
+  Vue.use(Buefy.default)
+  new Vue({
+    el: '#app',
+    data: {
+      file: '',
+      showPreview: false,
+      imagePreview: '',
+      result: ''
+    },
+    components: {
+      'picture-input': PictureInput
+    },
+    methods: {
+
+      handleFileUpload() {
+        this.file = this.$refs.file.files[0];
+        let reader = new FileReader();
+
+        reader.addEventListener("load", function () {
+          this.showPreview = true;
+          this.imagePreview = reader.result;
+        }.bind(this), false);
+
+        if (this.file) {
+         
+          if (/\.(jpe?g|png|gif)$/i.test(this.file.name)) {
+            
+            reader.readAsDataURL(this.file);
+          }
+        }
+      },
+      submitFile() {
+        var formData = new FormData();
+        var config = {
+          headers: {
+            'content-type': 'multipart/form-data'
+          }
+        };
+        formData.append('image', this.file);
+
+        this.$http.post(`http://127.0.0.1:5000/classify/`, formData, config).then(function (response) {
+
+          this.result = response.body
+          console.log(result);
+        }).catch(function (err) {
+          console.error(err);
+        })
+      },
+
+
+    }
+  })
+</script>
+
+</html>
