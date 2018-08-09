@@ -126,7 +126,7 @@ layer_fc1 = create_fc_layer(input=layer_flat,
                     use_relu=True)
 
 dropout = tf.layers.dropout(
-        inputs=layer_fc1, rate=0.45
+        inputs=layer_fc1, rate=0.70
     )             
 
 layer_fc2 = create_fc_layer(input=dropout,

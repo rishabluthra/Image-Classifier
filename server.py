@@ -1,5 +1,6 @@
 # Importing all the libraries for the server.
 from flask import Flask, jsonify, abort, request, make_response, url_for
+from flask_cors import CORS, cross_origin
 from flask_uploads import UploadSet, configure_uploads, IMAGES
 import tensorflow as tf
 import numpy as np 
@@ -7,12 +8,13 @@ import os, glob, cv2
 import sys,argparse 
 
 app = Flask(__name__)
-
+cors = CORS(app)
+app.config['CORS_HEADERS'] = '*'
 # Setting the directory for the uploaded images.
 photos = UploadSet('photos', IMAGES)
 app.config['UPLOADED_PHOTOS_DEST'] = '.\static\img'
 configure_uploads(app, photos)
-
+@cross_origin()
 # The function that gets the requests from my front end and prepares it for prediction.
 @app.route('/classify/', methods=['POST'])
 def hello():
