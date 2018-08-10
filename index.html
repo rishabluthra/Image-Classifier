@@ -119,7 +119,7 @@
         };
         formData.append('image', this.file);
 
-        this.$http.post(`https://thirsty-poincare-698377.netlify.com/classify/`, formData, config).then(function (response) {
+        this.$http.post(`localhost:5000/classify/`, formData, config).then(function (response) {
 
           this.result = response.body
           console.log(result);
